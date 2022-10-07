@@ -58,7 +58,22 @@
             />
             <button class="form-control__button">Добавить товар</button>
           </form>
-          <div class="content__cards"></div>
+          <div class="product__cards cards-product">
+            <div class="cards-product__card card" v-for="item in 6" :key="item">
+              <div class="card__image">
+                <img src="@/image/rectangle.jpg" alt="Фото товара" />
+              </div>
+              <div class="card__body">
+                <h2 class="card__header">Наименование товара</h2>
+                <p class="card__text">
+                  Довольно-таки интересное описание товара в несколько строк.
+                  Довольно-таки интересное описание товара в несколько строк
+                </p>
+                <span class="card__price">10 000 руб.</span>
+                <button class="card__del"></button>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </main>

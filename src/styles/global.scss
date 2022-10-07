@@ -15,16 +15,17 @@ $fontSize: 16px;
 .product {
 
 &__container {
+	display: flex;
 }
 
 &__form {
 }
+
+&__cards {
 }
-
-
-.product__cards {
 }
 
 @import './null.scss';
 @import './header.scss';
 @import './form.scss';
+@import './cards.scss';
