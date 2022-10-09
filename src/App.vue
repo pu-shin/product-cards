@@ -3,10 +3,11 @@
     <header class="header">
       <div class="header__container">
         <h1 class="header__text">Добавление товара</h1>
-        <select class="header__select" name="" id="">
-          <option value="">По умолчанию</option>
-          <option value="">По дате</option>
-          <option value="">По рейтингу</option>
+        <select class="header__select" v-model="selected">
+          <option value="default" selected hidden>По умолчанию</option>
+          <option value="max">По цене max</option>
+          <option value="min">По цене min</option>
+          <option value="title">По названию</option>
         </select>
       </div>
     </header>
@@ -106,6 +107,7 @@ export default {
       desc: "",
       link: "",
       price: "",
+      selected: "default",
     };
   },
   mounted() {
@@ -120,6 +122,7 @@ export default {
         price: this.price,
         id: Date.now(),
       });
+      this.sortCards(this.selected);
       this.saveCards();
     },
     delCard(id) {
@@ -137,8 +140,26 @@ export default {
     checkLoadImg(idx) {
       this.products[idx].link = defaultImage;
     },
+    sortCards(selectedValue) {
+      switch (selectedValue) {
+        case "min":
+          this.products.sort((a, b) => a.price - b.price);
+          break;
+        case "max":
+          this.products.sort((a, b) => b.price - a.price);
+          break;
+        case "title":
+          this.products.sort((a, b) => a.name.localeCompare(b.name));
+          break;
+      }
+    },
   },
   computed: {},
+  watch: {
+    selected(value) {
+      this.sortCards(value);
+    },
+  },
 };
 </script>
 
