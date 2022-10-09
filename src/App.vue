@@ -13,7 +13,11 @@
     <main class="mainpage">
       <div class="product">
         <div class="product__container">
-          <form class="product__form form-control" action="" @submit.prevent>
+          <form
+            class="product__form form-control"
+            action=""
+            @submit.prevent="addCard"
+          >
             <label
               class="form-control__label form-control__label_required"
               for="name"
@@ -23,6 +27,7 @@
               class="form-control__item"
               type="text"
               id="name"
+              v-model.trim="name"
               placeholder="Введите наименование товара"
             />
             <label class="form-control__label" for="desc"
@@ -32,6 +37,7 @@
               class="form-control__item form-control__textarea"
               type="text"
               id="desc"
+              v-model.trim="desc"
               placeholder="Введите описание товара"
             />
             <label
@@ -44,6 +50,7 @@
               type="text"
               id="link"
               placeholder="Введите ссылку"
+              v-model.trim="link"
             />
             <label
               class="form-control__label form-control__label_required"
@@ -55,22 +62,28 @@
               type="text"
               id="price"
               placeholder="Введите цену"
+              v-model.trim="price"
             />
             <button class="form-control__button">Добавить товар</button>
           </form>
           <div class="product__cards cards-product">
-            <div class="cards-product__card card" v-for="item in 6" :key="item">
+            <div
+              class="cards-product__card card"
+              v-for="(item, index) in products"
+              :key="index"
+            >
               <div class="card__image">
-                <img src="@/image/rectangle.jpg" alt="Фото товара" />
+                <img
+                  :src="item.link"
+                  @error="checkLoadImg(index)"
+                  alt="Фото товара"
+                />
               </div>
               <div class="card__body">
-                <h2 class="card__header">Наименование товара</h2>
-                <p class="card__text">
-                  Довольно-таки интересное описание товара в несколько строк.
-                  Довольно-таки интересное описание товара в несколько строк
-                </p>
-                <span class="card__price">10 000 руб.</span>
-                <button class="card__del"></button>
+                <h2 class="card__header">{{ item.name }}</h2>
+                <p class="card__text">{{ item.desc }}</p>
+                <span class="card__price">{{ item.price }}</span>
+                <button class="card__del" @click="delCard(item.id)"></button>
               </div>
             </div>
           </div>
@@ -81,8 +94,51 @@
 </template>
 
 <script>
+import { defaultArr } from "@/static";
+import defaultImage from "@/assets/img/box.jpg";
+
 export default {
   name: "App",
+  data() {
+    return {
+      products: [],
+      name: "",
+      desc: "",
+      link: "",
+      price: "",
+    };
+  },
+  mounted() {
+    this.renderCards();
+  },
+  methods: {
+    addCard() {
+      this.products.push({
+        name: this.name,
+        desc: this.desc,
+        link: this.link,
+        price: this.price,
+        id: Date.now(),
+      });
+      this.saveCards();
+    },
+    delCard(id) {
+      let idx = this.products.findIndex((item) => item.id === id);
+      this.products.splice(idx, 1);
+      this.saveCards();
+    },
+    renderCards() {
+      this.products =
+        JSON.parse(localStorage.getItem("products")) || defaultArr;
+    },
+    saveCards() {
+      localStorage.setItem("products", JSON.stringify(this.products));
+    },
+    checkLoadImg(idx) {
+      this.products[idx].link = defaultImage;
+    },
+  },
+  computed: {},
 };
 </script>
 
