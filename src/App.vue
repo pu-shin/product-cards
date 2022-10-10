@@ -19,52 +19,75 @@
             action=""
             @submit.prevent="addCard"
           >
-            <label
-              class="form-control__label form-control__label_required"
-              for="name"
-              >Наименование товара</label
+            <div
+              class="form-control__row"
+              :class="{ 'form-control__row_required': !validName }"
             >
-            <input
-              class="form-control__item"
-              type="text"
-              id="name"
-              v-model.trim="name"
-              placeholder="Введите наименование товара"
-            />
-            <label class="form-control__label" for="desc"
-              >Описание товара</label
+              <label
+                class="form-control__label form-control__label_required"
+                for="name"
+                >Наименование товара</label
+              >
+              <input
+                class="form-control__item"
+                type="text"
+                id="name"
+                v-model.trim="name"
+                @blur="checkValid('blur', 'name')"
+                @focus="checkValid('focus', 'name')"
+                placeholder="Введите наименование товара"
+              />
+            </div>
+            <div class="form-control__row">
+              <label class="form-control__label" for="desc"
+                >Описание товара</label
+              >
+              <textarea
+                class="form-control__item form-control__textarea"
+                type="text"
+                id="desc"
+                v-model.trim="desc"
+                placeholder="Введите описание товара"
+              />
+            </div>
+            <div
+              class="form-control__row"
+              :class="{ 'form-control__row_required': !validLink }"
             >
-            <textarea
-              class="form-control__item form-control__textarea"
-              type="text"
-              id="desc"
-              v-model.trim="desc"
-              placeholder="Введите описание товара"
-            />
-            <label
-              class="form-control__label form-control__label_required"
-              for="link"
-              >Ссылка на изображение товара</label
+              <label
+                class="form-control__label form-control__label_required"
+                for="link"
+                >Ссылка на изображение товара</label
+              >
+              <input
+                class="form-control__item"
+                type="text"
+                id="link"
+                placeholder="Введите ссылку"
+                v-model.trim="link"
+                @blur="checkValid('blur', 'link')"
+                @focus="checkValid('focus', 'link')"
+              />
+            </div>
+            <div
+              class="form-control__row"
+              :class="{ 'form-control__row_required': !validPrice }"
             >
-            <input
-              class="form-control__item"
-              type="text"
-              id="link"
-              placeholder="Введите ссылку"
-              v-model.trim="link"
-            />
-            <label
-              class="form-control__label form-control__label_required"
-              for="price"
-              >Цена товара</label
-            >
-            <input
-              class="form-control__item"
-              type="text"
-              id="price"
-              placeholder="Введите цену"
-              v-model.trim="price"
-            />
+              <label
+                class="form-control__label form-control__label_required"
+                for="price"
+                >Цена товара</label
+              >
+              <input
+                class="form-control__item"
+                id="price"
+                type="number"
+                placeholder="Введите цену"
+                v-model.number="price"
+                @blur="checkValid('blur', 'price')"
+                @focus="checkValid('focus', 'price')"
+              />
+            </div>
             <button class="form-control__button">Добавить товар</button>
           </form>
           <div class="product__cards cards-product">
@@ -108,6 +131,9 @@ export default {
       link: "",
       price: "",
       selected: "default",
+      validName: true,
+      validLink: true,
+      validPrice: true,
     };
   },
   mounted() {
@@ -151,6 +177,14 @@ export default {
         case "title":
           this.products.sort((a, b) => a.name.localeCompare(b.name));
           break;
+      }
+    },
+    checkValid(type, target) {
+      const prop = target[0].toUpperCase() + target.slice(1);
+      if (type === "blur") {
+        this["valid" + prop] = this[target] ? true : false;
+      } else if (type === "focus") {
+        this["valid" + prop] = true;
       }
     },
   },

@@ -11,11 +11,10 @@
 	box-shadow: 0px 20px 30px rgba(0, 0, 0, 0.04), 0px 6px 10px rgba(0, 0, 0, 0.02);
 	border-radius: 4px;
 	&__label {
-		font-size: 10px;
+		font-size: 12px;
 		line-height: 13px;
 		letter-spacing: -0.02em;
 		color: #49485E;
-		margin-bottom: 4px;
 	}
 
 	&__label_required::after {
@@ -34,16 +33,14 @@
 		background: #FFFEFB;
 		box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
 		border-radius: 4px;
-		margin-bottom: 16px;
 		height: 36px;
 		padding: 0px 16px;
 		font-size: 12px;
 		line-height: 125%;
-	}
-
-	&__item::placeholder {
-		color: #B4B4B4;
-		;
+		margin-bottom: 16px;
+		&::placeholder {
+			color: #B4B4B4;
+			}
 	}
 
 	&__textarea {
@@ -64,4 +61,39 @@
 		letter-spacing: -0.02em;
 		color: #B4B4B4;
 	}
+}
+
+.form-control__row {
+	display: flex;
+	flex-direction: column;
+	row-gap: 4px;
+	position: relative;
+
+}
+.form-control__row_required {
+	> input {
+			border: 1px solid #FF8484;
+	}
+	&:after{
+		content: "Поле является обязательным";
+		position: absolute;
+		color: #ff8484;
+		top: 80%;
+		left: 0;
+		font-size: 10px;
+		line-height: 125%;
+		letter-spacing: -0.02em;
+	}
+}
+
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+	-webkit-appearance: none; 
+}
+
+input[type='number'],
+input[type="number"]:hover,
+input[type="number"]:focus {
+	appearance: none;
+	-moz-appearance: textfield;
 }
