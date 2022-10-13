@@ -61,16 +61,21 @@
 		letter-spacing: -0.02em;
 		color: #B4B4B4;
 	}
-}
 
-.form-control__row {
+	&__button_valid{
+		background-color: #7BAE73;
+		color: #FFFFFF;
+	}
+
+
+&__row {
 	display: flex;
 	flex-direction: column;
 	row-gap: 4px;
 	position: relative;
 
 }
-.form-control__row_required {
+&__row_required {
 	> input {
 			border: 1px solid #FF8484;
 	}
@@ -84,6 +89,7 @@
 		line-height: 125%;
 		letter-spacing: -0.02em;
 	}
+}
 }
 
 input[type="number"]::-webkit-outer-spin-button,

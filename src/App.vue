@@ -21,7 +21,7 @@
           >
             <div
               class="form-control__row"
-              :class="{ 'form-control__row_required': !validName }"
+              :class="{ 'form-control__row_required': !valid.name }"
             >
               <label
                 class="form-control__label form-control__label_required"
@@ -52,7 +52,7 @@
             </div>
             <div
               class="form-control__row"
-              :class="{ 'form-control__row_required': !validLink }"
+              :class="{ 'form-control__row_required': !valid.link }"
             >
               <label
                 class="form-control__label form-control__label_required"
@@ -71,7 +71,7 @@
             </div>
             <div
               class="form-control__row"
-              :class="{ 'form-control__row_required': !validPrice }"
+              :class="{ 'form-control__row_required': !valid.price }"
             >
               <label
                 class="form-control__label form-control__label_required"
@@ -81,14 +81,19 @@
               <input
                 class="form-control__item"
                 id="price"
-                type="number"
                 placeholder="Введите цену"
-                v-model.number="price"
+                v-model="price"
                 @blur="checkValid('blur', 'price')"
                 @focus="checkValid('focus', 'price')"
               />
             </div>
-            <button class="form-control__button">Добавить товар</button>
+            <button
+              class="form-control__button"
+              :disabled="!checkValidForm"
+              :class="{ 'form-control__button_valid': checkValidForm }"
+            >
+              Добавить товар
+            </button>
           </form>
           <div class="product__cards cards-product">
             <div
@@ -106,7 +111,7 @@
               <div class="card__body">
                 <h2 class="card__header">{{ item.name }}</h2>
                 <p class="card__text">{{ item.desc }}</p>
-                <span class="card__price">{{ item.price }}</span>
+                <span class="card__price">{{ item.price + " руб." }}</span>
                 <button class="card__del" @click="delCard(item.id)"></button>
               </div>
             </div>
@@ -119,7 +124,7 @@
 
 <script>
 import { defaultArr } from "@/static";
-import defaultImage from "@/assets/img/box.jpg";
+import defaultImage from "@/assets/img/default-box.png";
 
 export default {
   name: "App",
@@ -131,9 +136,11 @@ export default {
       link: "",
       price: "",
       selected: "default",
-      validName: true,
-      validLink: true,
-      validPrice: true,
+      valid: {
+        name: true,
+        link: true,
+        price: true,
+      },
     };
   },
   mounted() {
@@ -180,18 +187,33 @@ export default {
       }
     },
     checkValid(type, target) {
-      const prop = target[0].toUpperCase() + target.slice(1);
       if (type === "blur") {
-        this["valid" + prop] = this[target] ? true : false;
+        this.valid[target] = this[target] ? true : false;
       } else if (type === "focus") {
-        this["valid" + prop] = true;
+        this.valid[target] = true;
       }
     },
   },
-  computed: {},
+  computed: {
+    checkValidForm() {
+      return this.name && this.link && this.price ? true : false;
+    },
+  },
   watch: {
     selected(value) {
       this.sortCards(value);
+    },
+    price(value) {
+      const validSpace = value.replace(/\s/g, "");
+      const validNumber = validSpace.replace(/[^0-9]/g, "");
+      this.price = [...validNumber].reduceRight(
+        (previousValue, currentValue, idx) => {
+          const spaceOrNothing =
+            (validNumber.length - idx) % 3 === 0 ? " " : "";
+          return spaceOrNothing + currentValue + previousValue;
+        },
+        ""
+      );
     },
   },
 };
@@ -199,3 +221,5 @@ export default {
 
 <style>
 </style>
+
+
