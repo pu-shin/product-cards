@@ -1,42 +1,78 @@
 .cards-product {
-	max-width: 1028px;
-	margin-left: 8px;
+	flex: 1 1 auto;
+	min-width: 300px;
+	&__body {
+	max-width: 1044px;
 	display: flex;
 	flex-wrap: wrap;
 	row-gap: 16px;
-	column-gap: 16px;
-	&__card {}
-}
+	margin: 0px -8px 0px 0px;
+	@media (max-width:767.98px) {
+			justify-content: center;
+			margin: 0px ;
+		}
+	}
+}	
 
 .card {
+	padding: 0px 8px;
+	flex: 0 1 33.333%;
+	min-width: 300px;
+	@media (max-width: 1261.98px) {
+		min-width: 25%;
+	}
+	@media (max-width: 1046.98px) {
+		min-width: 50%;
+		}
+		@media (max-width:767.98px) {
+			min-width: 75%;
+			align-items: center;
+		}
+		@media (max-width: 679.98px) {
+			min-width: 50%;
+	}
+		@media (max-width: 479.98px) {
+			flex: 1 1 auto;
+			padding: 0px;
+			min-width: 275px;
+		}
+&__body {
+	display: flex;
+	flex-direction: column;
 	overflow-wrap: break-word;
 	position: relative;
-	width: 332px;
-	min-height: 423px;
 	background: #FFFEFB;
 	box-shadow: 0px 20px 30px rgba(0, 0, 0, 0.04), 0px 6px 10px rgba(0, 0, 0, 0.02);
 	border-radius: 4px;
-	& :not(:last-child) {
-		margin-bottom: 16px;
+	height: 100%;
 	}
-	
 	&__image {
-		height: 200px;
+		position: relative;
+		padding: 0px 0px 60.245% 0px;
+		margin-bottom: 16px;
 		img {
+			position: absolute;
+			top: 0;
+			left: 0;
 			width: 100%;
 			height: 100%;
 			object-fit: contain;
 		}
 	}
 
-	&__body{
+	&__content{
 			display: flex;
 			flex-direction: column;
-			min-height: 223px;
 			padding: 0px 16px 24px 16px;	
+			height: 100%;
+		& :nth-child(1) {
+					margin-bottom: 16px;
+				}
 		& :nth-child(2) {
 				margin-bottom: 32px;
 			}
+		@media (max-width: 1214.98px) {
+		}
 	}
 
 	&__header {

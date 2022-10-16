@@ -6,26 +6,31 @@ $fontFamily:'Source Sans Pro';
 $fontSize: 16px;
 
 .wrapper {
-	max-width: 1440px;
-	margin: 0 auto;
-}
-
-.mainpage {}
+	min-height: 100%;
+	overflow: hidden;
+	}
 
 .product {
-
-&__container {
-	display: flex;
+	padding: 0px 0px 50px 0px;
+	&__container{
+			display: flex;
+	@media (max-width: 679.98px) {
+		justify-content: center;
+			flex-wrap: wrap;
+			row-gap: 30px;
+		}
+	}
+	
 }
 
-&__form {
-}
-
-&__cards {
-}
+[class*="__container"] {
+	max-width: 1406px;
+	margin: 0px auto;
+	padding: 0px 15px;
 }
 
 @import './null.scss';
 @import './header.scss';
 @import './form.scss';
 @import './cards.scss';
+@import './loader.scss';

@@ -1,12 +1,17 @@
+.form{
+	flex: 0 1 340px;
+	min-width: 275px;
+	padding-right: 8px;
+	@media (max-width: 479.98px) {
+		max-width: 332px;
+		padding: 0px;
+		}
+	
+}
 .form-control {
-	margin-right: 8px;
-	margin-left: 32px;
 	padding: 24px;
 	display: flex;
-	flex-shrink: 0;
 	flex-direction: column;
-	width: 332px;
-	height: 440px;
 	background: #FFFEFB;
 	box-shadow: 0px 20px 30px rgba(0, 0, 0, 0.04), 0px 6px 10px rgba(0, 0, 0, 0.02);
 	border-radius: 4px;
@@ -90,16 +95,4 @@
 		letter-spacing: -0.02em;
 	}
 }
-}
-
-input[type="number"]::-webkit-outer-spin-button,
-input[type="number"]::-webkit-inner-spin-button {
-	-webkit-appearance: none; 
-}
-
-input[type='number'],
-input[type="number"]:hover,
-input[type="number"]:focus {
-	appearance: none;
-	-moz-appearance: textfield;
 }
