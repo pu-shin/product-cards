@@ -2,117 +2,127 @@
   <div class="wrapper">
     <header class="header">
       <div class="header__container">
-        <h1 class="header__text">Добавление товара</h1>
-        <select class="header__select" v-model="selected">
-          <option value="default" selected hidden>По умолчанию</option>
-          <option value="max">По цене max</option>
-          <option value="min">По цене min</option>
-          <option value="title">По названию</option>
-        </select>
+        <div class="header__content content-header">
+          <h1 class="content-header__text">Добавление товара</h1>
+          <select class="content-header__select" v-model="selected">
+            <option value="default" selected hidden>По умолчанию</option>
+            <option value="max">По цене max</option>
+            <option value="min">По цене min</option>
+            <option value="title">По названию</option>
+          </select>
+        </div>
       </div>
     </header>
     <main class="mainpage">
       <div class="product">
         <div class="product__container">
-          <form
-            class="product__form form-control"
-            action=""
-            @submit.prevent="addCard"
-          >
-            <div
-              class="form-control__row"
-              :class="{ 'form-control__row_required': !valid.name }"
-            >
-              <label
-                class="form-control__label form-control__label_required"
-                for="name"
-                >Наименование товара</label
+          <form class="product__form form" @submit.prevent="addCard">
+            <div class="form__body form-control">
+              <div
+                class="form-control__row"
+                :class="{ 'form-control__row_required': !valid.name }"
               >
-              <input
-                class="form-control__item"
-                type="text"
-                id="name"
-                v-model.trim="name"
-                @blur="checkValid('blur', 'name')"
-                @focus="checkValid('focus', 'name')"
-                placeholder="Введите наименование товара"
-              />
-            </div>
-            <div class="form-control__row">
-              <label class="form-control__label" for="desc"
-                >Описание товара</label
-              >
-              <textarea
-                class="form-control__item form-control__textarea"
-                type="text"
-                id="desc"
-                v-model.trim="desc"
-                placeholder="Введите описание товара"
-              />
-            </div>
-            <div
-              class="form-control__row"
-              :class="{ 'form-control__row_required': !valid.link }"
-            >
-              <label
-                class="form-control__label form-control__label_required"
-                for="link"
-                >Ссылка на изображение товара</label
-              >
-              <input
-                class="form-control__item"
-                type="text"
-                id="link"
-                placeholder="Введите ссылку"
-                v-model.trim="link"
-                @blur="checkValid('blur', 'link')"
-                @focus="checkValid('focus', 'link')"
-              />
-            </div>
-            <div
-              class="form-control__row"
-              :class="{ 'form-control__row_required': !valid.price }"
-            >
-              <label
-                class="form-control__label form-control__label_required"
-                for="price"
-                >Цена товара</label
-              >
-              <input
-                class="form-control__item"
-                id="price"
-                placeholder="Введите цену"
-                v-model="price"
-                @blur="checkValid('blur', 'price')"
-                @focus="checkValid('focus', 'price')"
-              />
-            </div>
-            <button
-              class="form-control__button"
-              :disabled="!checkValidForm"
-              :class="{ 'form-control__button_valid': checkValidForm }"
-            >
-              Добавить товар
-            </button>
-          </form>
-          <div class="product__cards cards-product">
-            <div
-              class="cards-product__card card"
-              v-for="(item, index) in products"
-              :key="index"
-            >
-              <div class="card__image">
-                <img
-                  :src="item.link"
-                  @error="checkLoadImg(index)"
-                  alt="Фото товара"
+                <label
+                  class="form-control__label form-control__label_required"
+                  for="name"
+                  >Наименование товара</label
+                >
+                <input
+                  class="form-control__item"
+                  type="text"
+                  id="name"
+                  maxlength="29"
+                  v-model.trim="name"
+                  @blur="checkValid('blur', 'name')"
+                  @focus="checkValid('focus', 'name')"
+                  placeholder="Введите наименование товара"
                 />
               </div>
-              <div class="card__body">
-                <h2 class="card__header">{{ item.name }}</h2>
-                <p class="card__text">{{ item.desc }}</p>
-                <span class="card__price">{{ item.price + " руб." }}</span>
-                <button class="card__del" @click="delCard(item.id)"></button>
+              <div class="form-control__row">
+                <label class="form-control__label" for="desc"
+                  >Описание товара</label
+                >
+                <textarea
+                  class="form-control__item form-control__textarea"
+                  type="text"
+                  id="desc"
+                  maxlength="136"
+                  v-model.trim="desc"
+                  placeholder="Введите описание товара"
+                />
+              </div>
+              <div
+                class="form-control__row"
+                :class="{ 'form-control__row_required': !valid.link }"
+              >
+                <label
+                  class="form-control__label form-control__label_required"
+                  for="link"
+                  >Ссылка на изображение товара</label
+                >
+                <input
+                  class="form-control__item"
+                  type="text"
+                  id="link"
+                  placeholder="Введите ссылку"
+                  v-model.trim="link"
+                  @blur="checkValid('blur', 'link')"
+                  @focus="checkValid('focus', 'link')"
+                />
+              </div>
+              <div
+                class="form-control__row"
+                :class="{ 'form-control__row_required': !valid.price }"
+              >
+                <label
+                  class="form-control__label form-control__label_required"
+                  for="price"
+                  >Цена товара</label
+                >
+                <input
+                  class="form-control__item"
+                  id="price"
+                  maxlength="23"
+                  placeholder="Введите цену"
+                  v-model="price"
+                  @blur="checkValid('blur', 'price')"
+                  @focus="checkValid('focus', 'price')"
+                />
+              </div>
+              <button
+                class="form-control__button"
+                :disabled="!checkValidForm"
+                :class="{ 'form-control__button_valid': checkValidForm }"
+              >
+                Добавить товар
+              </button>
+            </div>
+          </form>
+          <div class="product__cards cards-product">
+            <div class="cards-product__body">
+              <div
+                class="cards-product__card card"
+                v-for="(item, index) in products"
+                :key="index"
+              >
+                <div class="card__body">
+                  <div class="card__image">
+                    <img
+                      :src="item.link"
+                      @error="checkLoadImg(index)"
+                      alt="Фото товара"
+                    />
+                  </div>
+                  <div class="card__content">
+                    <h2 class="card__header">{{ item.name }}</h2>
+                    <p class="card__text">{{ item.desc }}</p>
+                    <span class="card__price">{{ item.price + " руб." }}</span>
+                    <button
+                      class="card__del"
+                      @click="delCard(item.id)"
+                    ></button>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -120,11 +130,14 @@
       </div>
     </main>
   </div>
+  <app-loader v-if="loading"></app-loader>
 </template>
+
 
 <script>
 import { defaultArr } from "@/static";
 import defaultImage from "@/assets/img/default-box.png";
+import AppLoader from "@/components/AppLoader.vue";
 
 export default {
   name: "App",
@@ -136,6 +149,7 @@ export default {
       link: "",
       price: "",
       selected: "default",
+      loading: false,
       valid: {
         name: true,
         link: true,
@@ -144,7 +158,10 @@ export default {
     };
   },
   mounted() {
-    this.renderCards();
+    this.loadProducts();
+  },
+  components: {
+    AppLoader,
   },
   methods: {
     addCard() {
@@ -153,10 +170,13 @@ export default {
         desc: this.desc,
         link: this.link,
         price: this.price,
+        priceToNumber: this.stringToNumber,
         id: Date.now(),
       });
+      this.name = "";
       this.sortCards(this.selected);
       this.saveCards();
+      this.clearInputs();
     },
     delCard(id) {
       let idx = this.products.findIndex((item) => item.id === id);
@@ -176,10 +196,10 @@ export default {
     sortCards(selectedValue) {
       switch (selectedValue) {
         case "min":
-          this.products.sort((a, b) => a.price - b.price);
+          this.products.sort((a, b) => a.priceToNumber - b.priceToNumber);
           break;
         case "max":
-          this.products.sort((a, b) => b.price - a.price);
+          this.products.sort((a, b) => b.priceToNumber - a.priceToNumber);
           break;
         case "title":
           this.products.sort((a, b) => a.name.localeCompare(b.name));
@@ -193,10 +213,26 @@ export default {
         this.valid[target] = true;
       }
     },
+    clearInputs() {
+      this.name = "";
+      this.desc = "";
+      this.link = "";
+      this.price = "";
+    },
+    loadProducts() {
+      this.loading = true;
+      setTimeout(() => {
+        this.renderCards();
+        this.loading = false;
+      }, 1500);
+    },
   },
   computed: {
     checkValidForm() {
       return this.name && this.link && this.price ? true : false;
+    },
+    stringToNumber() {
+      return parseInt(this.price.replace(/\s/g, ""));
     },
   },
   watch: {
@@ -204,16 +240,17 @@ export default {
       this.sortCards(value);
     },
     price(value) {
-      const validSpace = value.replace(/\s/g, "");
-      const validNumber = validSpace.replace(/[^0-9]/g, "");
-      this.price = [...validNumber].reduceRight(
+      const valueToNumber = value.replace(/[^0-9]/g, "");
+      const spaceToValue = [...valueToNumber].reduceRight(
         (previousValue, currentValue, idx) => {
           const spaceOrNothing =
-            (validNumber.length - idx) % 3 === 0 ? " " : "";
+            (valueToNumber.length - idx) % 3 === 0 ? " " : "";
           return spaceOrNothing + currentValue + previousValue;
         },
         ""
       );
+      this.price =
+        spaceToValue[0] === " " ? spaceToValue.slice(1) : spaceToValue;
     },
   },
 };
@@ -221,5 +258,3 @@ export default {
 
 <style>
 </style>
-
-
