@@ -1,0 +1,13 @@
+.slide-fade-enter-active {
+	transition:  all 0.5s ease-out;
+}
+
+.slide-fade-leave-active {
+	transition:  all 0.5s ease-out 1s;
+}
+
+.slide-fade-enter-from,
+.slide-fade-leave-to {
+	transform: translateX(-105%);
+	opacity: 0;
+}

@@ -1,12 +1,15 @@
 .header {
 	&__container {
+		
 	}
 	&__content {
 		display: flex;
-		justify-content: space-between;
 		align-items: center;
-		margin-bottom: 16px;
+		margin-bottom: 25px;
 		padding-top: 32px;
+		gap: 25px;
+		flex-wrap: wrap-reverse;
+		justify-content: end;
 	}
 }
 
@@ -17,12 +20,15 @@
 		line-height: 125%;
 		color: #3F3F3F;
 		padding-right: 5px;
+		flex: 1 0 auto;
+		@media (max-width: 529.98px) {
+			text-align: center;
+		}
 	}
-
 	&__select {
 		font-family: inherit;
 		width: 121.49px;
-		height: 36px;
+		height: 32px;
 		box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
 		border: none;
 		border-radius: 4px;
@@ -30,6 +36,59 @@
 		line-height: 125%;
 		color: #B4B4B4;
 		padding-left: 16px;
-		background: #FFFEFB;}
+		background: #FFFEFB;
 		padding-left: 5px;
+}
+}
+
+.search {
+	box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+	border-radius: 4px;
+	height: 32px;
+	display: flex;
+	overflow: hidden;
+&__input{
+	flex: 1 1 200px;
+	width: 200px;
+	height: 100%;
+	padding-left: 15px;
+	border: none;
+	background: #FFFEFB;
+	color: #B4B4B4;
+	font-family: $fontFamily;
+	font-size: 12px;
+	line-height: 125%;
+	color: $mainColor;
+	transition: .3s linear;
+	&::placeholder {
+			color: #B4B4B4;
+		}
+	&:focus {
+			width: 250px;
+				}
+	@media (max-width:991.98px) {
+	&:focus {
+			width: 200px;
+		}
+							
+				}
+}
+	
+&__button {
+	flex: 0 1 32px;
+	width: 32px;
+	opacity: 0.5;
+	height: 100%;
+	position: relative;
+		&:before {
+			content: "";
+			position: absolute;
+			display: block;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			background: url("../assets/icons/search.png") center / 75% 75% no-repeat;
+			}
+	}
 }

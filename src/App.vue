@@ -4,6 +4,20 @@
       <div class="header__container">
         <div class="header__content content-header">
           <h1 class="content-header__text">Добавление товара</h1>
+          <div class="content-header__search search">
+            <input
+              class="search__input"
+              type="text"
+              placeholder="Поиск товара"
+              @keyup.enter="searchProduct(foundName)"
+              v-model.trim="foundName"
+            />
+            <button
+              class="search__button"
+              type="button"
+              @click="searchProduct(foundName)"
+            ></button>
+          </div>
           <select class="content-header__select" v-model="selected">
             <option value="default" selected hidden>По умолчанию</option>
             <option value="max">По цене max</option>
@@ -91,6 +105,7 @@
               </div>
               <button
                 class="form-control__button"
+                type="submit"
                 :disabled="!checkValidForm"
                 :class="{ 'form-control__button_valid': checkValidForm }"
               >
@@ -130,6 +145,10 @@
       </div>
     </main>
   </div>
+  <transition-group name="slide-fade">
+    <app-popup v-if="popupAdd" color="#7bae73">Товар добавлен</app-popup>
+    <app-popup v-if="popupDel" color="#FF8484">Товар удален</app-popup>
+  </transition-group>
   <app-loader v-if="loading"></app-loader>
 </template>
 
@@ -138,18 +157,22 @@
 import { defaultArr } from "@/static";
 import defaultImage from "@/assets/img/default-box.png";
 import AppLoader from "@/components/AppLoader.vue";
+import AppPopup from "@/components/AppPopup.vue";
 
 export default {
   name: "App",
   data() {
     return {
       products: [],
+      foundName: "",
       name: "",
       desc: "",
       link: "",
       price: "",
       selected: "default",
       loading: false,
+      popupAdd: false,
+      popupDel: false,
       valid: {
         name: true,
         link: true,
@@ -162,6 +185,7 @@ export default {
   },
   components: {
     AppLoader,
+    AppPopup,
   },
   methods: {
     addCard() {
@@ -177,11 +201,13 @@ export default {
       this.sortCards(this.selected);
       this.saveCards();
       this.clearInputs();
+      this.addPopup();
     },
     delCard(id) {
-      let idx = this.products.findIndex((item) => item.id === id);
+      const idx = this.products.findIndex((item) => item.id === id);
       this.products.splice(idx, 1);
       this.saveCards();
+      this.delPopup();
     },
     renderCards() {
       this.products =
@@ -220,10 +246,36 @@ export default {
       this.price = "";
     },
     loadProducts() {
+      if (window.innerWidth < 768) {
+        this.renderCards();
+        return;
+      }
       this.loading = true;
       setTimeout(() => {
         this.renderCards();
         this.loading = false;
+      }, 1500);
+    },
+    searchProduct(foundName) {
+      if (foundName === "") {
+        this.renderCards();
+      }
+      this.products = this.products.filter((item) =>
+        item.name.toLowerCase().startsWith(foundName.toLowerCase())
+      );
+    },
+    addPopup() {
+      if (window.innerWidth < 768) return;
+      this.popupAdd = true;
+      setTimeout(() => {
+        this.popupAdd = false;
+      }, 1500);
+    },
+    delPopup() {
+      if (window.innerWidth < 768) return;
+      this.popupDel = true;
+      setTimeout(() => {
+        this.popupDel = false;
       }, 1500);
     },
   },
