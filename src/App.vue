@@ -132,11 +132,15 @@
                     <h2 class="card__header">{{ item.name }}</h2>
                     <p class="card__text">{{ item.desc }}</p>
                     <span class="card__price">{{ item.price + " руб." }}</span>
-                    <button
-                      class="card__del"
-                      @click="delCard(item.id)"
-                    ></button>
                   </div>
+                  <button
+                    class="card__edit card-buttons"
+                    @click="editCard(item)"
+                  ></button>
+                  <button
+                    class="card__del card-buttons"
+                    @click="delCard(item.id)"
+                  ></button>
                 </div>
               </div>
             </div>
@@ -145,10 +149,19 @@
       </div>
     </main>
   </div>
-  <transition-group name="slide-fade">
+  <transition-group name="fade-popup">
     <app-popup v-if="popupAdd" color="#7bae73">Товар добавлен</app-popup>
     <app-popup v-if="popupDel" color="#FF8484">Товар удален</app-popup>
   </transition-group>
+  <transition name="fade-modal">
+    <app-modal
+      v-if="modal"
+      :item="currentItem"
+      :validPrice="validPrice"
+      @close="modal = false"
+      @send-data="editDataCard"
+    ></app-modal>
+  </transition>
   <app-loader v-if="loading"></app-loader>
 </template>
 
@@ -158,6 +171,7 @@ import { defaultArr } from "@/static";
 import defaultImage from "@/assets/img/default-box.png";
 import AppLoader from "@/components/AppLoader.vue";
 import AppPopup from "@/components/AppPopup.vue";
+import AppModal from "@/components/AppModal.vue";
 
 export default {
   name: "App",
@@ -173,6 +187,8 @@ export default {
       loading: false,
       popupAdd: false,
       popupDel: false,
+      modal: false,
+      currentItem: null,
       valid: {
         name: true,
         link: true,
@@ -186,6 +202,7 @@ export default {
   components: {
     AppLoader,
     AppPopup,
+    AppModal,
   },
   methods: {
     addCard() {
@@ -194,10 +211,9 @@ export default {
         desc: this.desc,
         link: this.link,
         price: this.price,
-        priceToNumber: this.stringToNumber,
+        priceToNumber: this.stringToNumber(this.price),
         id: Date.now(),
       });
-      this.name = "";
       this.sortCards(this.selected);
       this.saveCards();
       this.clearInputs();
@@ -278,20 +294,21 @@ export default {
         this.popupDel = false;
       }, 1500);
     },
-  },
-  computed: {
-    checkValidForm() {
-      return this.name && this.link && this.price ? true : false;
+    editCard(item) {
+      this.currentItem = item;
+      this.modal = true;
     },
-    stringToNumber() {
-      return parseInt(this.price.replace(/\s/g, ""));
+    editDataCard(data) {
+      const idx = this.products.findIndex((item) => item.id === data.id);
+      this.products[idx] = {
+        ...data,
+        priceToNumber: this.stringToNumber(data.price),
+      };
     },
-  },
-  watch: {
-    selected(value) {
-      this.sortCards(value);
+    stringToNumber(value) {
+      return parseInt(value.replace(/\s/g, ""));
     },
-    price(value) {
+    validPrice(value) {
       const valueToNumber = value.replace(/[^0-9]/g, "");
       const spaceToValue = [...valueToNumber].reduceRight(
         (previousValue, currentValue, idx) => {
@@ -301,8 +318,20 @@ export default {
         },
         ""
       );
-      this.price =
-        spaceToValue[0] === " " ? spaceToValue.slice(1) : spaceToValue;
+      return spaceToValue[0] === " " ? spaceToValue.slice(1) : spaceToValue;
+    },
+  },
+  computed: {
+    checkValidForm() {
+      return this.name && this.link && this.price ? true : false;
+    },
+  },
+  watch: {
+    selected(value) {
+      this.sortCards(value);
+    },
+    price(value) {
+      this.price = this.validPrice(value);
     },
   },
 };

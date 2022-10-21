@@ -22,7 +22,21 @@ $fontSize: 16px;
 	}
 	
 }
-
+.card-buttons {
+	position: absolute;
+	top: 0;
+	right: 0;
+	width: 32px;
+	height: 32px;
+	translate: 25% -25%;
+	background: #FF8484 no-repeat center url("../assets/icons/delete.svg");
+	box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+	border-radius: 10px;
+	transition: all 0.3s ease 0s;
+	&:hover {
+		scale: 1.05;
+	}
+}
 [class*="__container"] {
 	max-width: 1406px;
 	margin: 0px auto;
@@ -35,3 +49,4 @@ $fontSize: 16px;
 @import './cards.scss';
 @import './loader.scss';
 @import './transition.scss';
+@import './modal.scss';
