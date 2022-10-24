@@ -74,7 +74,7 @@
 <script>
 export default {
   emits: ["close", "send-data"],
-  props: ["item", "validPrice", "checkValidForm"],
+  props: ["item", "validPrice"],
   data() {
     return {
       editName: this.item.name,

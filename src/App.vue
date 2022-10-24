@@ -115,34 +115,38 @@
           </form>
           <div class="product__cards cards-product">
             <div class="cards-product__body">
-              <div
-                class="cards-product__card card"
-                v-for="(item, index) in products"
-                :key="index"
-              >
-                <div class="card__body">
-                  <div class="card__image">
-                    <img
-                      :src="item.link"
-                      @error="checkLoadImg(index)"
-                      alt="Фото товара"
-                    />
+              <transition-group name="fade-cards" @before-leave="beforeLeave">
+                <div
+                  class="cards-product__card card"
+                  v-for="(item, index) in products"
+                  :key="item.id"
+                >
+                  <div class="card__body">
+                    <div class="card__image">
+                      <img
+                        :src="item.link"
+                        @error="checkLoadImg(index)"
+                        alt="Фото товара"
+                      />
+                    </div>
+                    <div class="card__content">
+                      <h2 class="card__header">{{ item.name }}</h2>
+                      <p class="card__text">{{ item.desc }}</p>
+                      <span class="card__price">{{
+                        item.price + " руб."
+                      }}</span>
+                    </div>
+                    <button
+                      class="card__edit card-buttons"
+                      @click="editCard(item)"
+                    ></button>
+                    <button
+                      class="card__del card-buttons"
+                      @click="delCard(item.id)"
+                    ></button>
                   </div>
-                  <div class="card__content">
-                    <h2 class="card__header">{{ item.name }}</h2>
-                    <p class="card__text">{{ item.desc }}</p>
-                    <span class="card__price">{{ item.price + " руб." }}</span>
-                  </div>
-                  <button
-                    class="card__edit card-buttons"
-                    @click="editCard(item)"
-                  ></button>
-                  <button
-                    class="card__del card-buttons"
-                    @click="delCard(item.id)"
-                  ></button>
                 </div>
-              </div>
+              </transition-group>
             </div>
           </div>
         </div>
@@ -153,7 +157,7 @@
     <app-popup v-if="popupAdd" color="#7bae73">Товар добавлен</app-popup>
     <app-popup v-if="popupDel" color="#FF8484">Товар удален</app-popup>
   </transition-group>
-  <transition name="fade-modal">
+  <transition-group name="fade-modal">
     <app-modal
       v-if="modal"
       :item="currentItem"
@@ -161,7 +165,7 @@
       @close="modal = false"
       @send-data="editDataCard"
     ></app-modal>
-  </transition>
+  </transition-group>
   <app-loader v-if="loading"></app-loader>
 </template>
 
@@ -205,6 +209,14 @@ export default {
     AppModal,
   },
   methods: {
+    beforeLeave(el) {
+      const { marginLeft, marginTop, width, height } =
+        window.getComputedStyle(el);
+      el.style.left = `${el.offsetLeft - parseFloat(marginLeft, 10)}px`;
+      el.style.top = `${el.offsetTop - parseFloat(marginTop, 10)}px`;
+      el.style.width = width;
+      el.style.height = height;
+    },
     addCard() {
       this.products.push({
         name: this.name,

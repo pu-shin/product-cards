@@ -11,3 +11,29 @@
 	transform: translateX(-105%);
 	opacity: 0;
 }
+
+.fade-modal-enter-active,
+.fade-modal-leave-active {
+	transition: opacity 0.3s ease;
+}
+
+.fade-modal-enter-from,
+.fade-modal-leave-to {
+	opacity: 0;
+}
+
+
+
+.fade-cards-move,
+.fade-cards-enter-active,
+.fade-cards-leave-active{
+	transition: all 0.8s ease;
+}
+.fade-cards-enter-from,
+.fade-cards-leave-to {
+	opacity: 0;
+}
+.fade-cards-leave-active {
+	 position: absolute;
+ }
+
