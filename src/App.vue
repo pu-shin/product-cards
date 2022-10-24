@@ -4,20 +4,7 @@
       <div class="header__container">
         <div class="header__content content-header">
           <h1 class="content-header__text">Добавление товара</h1>
-          <div class="content-header__search search">
-            <input
-              class="search__input"
-              type="text"
-              placeholder="Поиск товара"
-              @keyup.enter="searchProduct(foundName)"
-              v-model.trim="foundName"
-            />
-            <button
-              class="search__button"
-              type="button"
-              @click="searchProduct(foundName)"
-            ></button>
-          </div>
+          <app-search @search-card="searchProduct"></app-search>
           <select class="content-header__select" v-model="selected">
             <option value="default" selected hidden>По умолчанию</option>
             <option value="max">По цене max</option>
@@ -30,89 +17,7 @@
     <main class="mainpage">
       <div class="product">
         <div class="product__container">
-          <form class="product__form form" @submit.prevent="addCard">
-            <div class="form__body form-control">
-              <div
-                class="form-control__row"
-                :class="{ 'form-control__row_required': !valid.name }"
-              >
-                <label
-                  class="form-control__label form-control__label_required"
-                  for="name"
-                  >Наименование товара</label
-                >
-                <input
-                  class="form-control__item"
-                  type="text"
-                  id="name"
-                  maxlength="29"
-                  v-model.trim="name"
-                  @blur="checkValid('blur', 'name')"
-                  @focus="checkValid('focus', 'name')"
-                  placeholder="Введите наименование товара"
-                />
-              </div>
-              <div class="form-control__row">
-                <label class="form-control__label" for="desc"
-                  >Описание товара</label
-                >
-                <textarea
-                  class="form-control__item form-control__textarea"
-                  type="text"
-                  id="desc"
-                  maxlength="136"
-                  v-model.trim="desc"
-                  placeholder="Введите описание товара"
-                />
-              </div>
-              <div
-                class="form-control__row"
-                :class="{ 'form-control__row_required': !valid.link }"
-              >
-                <label
-                  class="form-control__label form-control__label_required"
-                  for="link"
-                  >Ссылка на изображение товара</label
-                >
-                <input
-                  class="form-control__item"
-                  type="text"
-                  id="link"
-                  placeholder="Введите ссылку"
-                  v-model.trim="link"
-                  @blur="checkValid('blur', 'link')"
-                  @focus="checkValid('focus', 'link')"
-                />
-              </div>
-              <div
-                class="form-control__row"
-                :class="{ 'form-control__row_required': !valid.price }"
-              >
-                <label
-                  class="form-control__label form-control__label_required"
-                  for="price"
-                  >Цена товара</label
-                >
-                <input
-                  class="form-control__item"
-                  id="price"
-                  maxlength="23"
-                  placeholder="Введите цену"
-                  v-model="price"
-                  @blur="checkValid('blur', 'price')"
-                  @focus="checkValid('focus', 'price')"
-                />
-              </div>
-              <button
-                class="form-control__button"
-                type="submit"
-                :disabled="!checkValidForm"
-                :class="{ 'form-control__button_valid': checkValidForm }"
-              >
-                Добавить товар
-              </button>
-            </div>
-          </form>
+          <add-form :validPrice="validPrice" @add-card="addCard"></add-form>
           <div class="product__cards cards-product">
             <div class="cards-product__body">
               <transition-group name="fade-cards" @before-leave="beforeLeave">
@@ -136,6 +41,9 @@
                         item.price + " руб."
                       }}</span>
                     </div>
+                    <span v-show="item.edited" class="card__edit-mark"
+                      >ред.</span
+                    >
                     <button
                       class="card__edit card-buttons"
                       @click="editCard(item)"
@@ -176,28 +84,20 @@ import defaultImage from "@/assets/img/default-box.png";
 import AppLoader from "@/components/AppLoader.vue";
 import AppPopup from "@/components/AppPopup.vue";
 import AppModal from "@/components/AppModal.vue";
+import AppSearch from "@/components/AppSearch.vue";
+import AddForm from "@/components/AddForm.vue";
 
 export default {
   name: "App",
   data() {
     return {
       products: [],
-      foundName: "",
-      name: "",
-      desc: "",
-      link: "",
-      price: "",
       selected: "default",
       loading: false,
       popupAdd: false,
       popupDel: false,
       modal: false,
       currentItem: null,
-      valid: {
-        name: true,
-        link: true,
-        price: true,
-      },
     };
   },
   mounted() {
@@ -207,6 +107,8 @@ export default {
     AppLoader,
     AppPopup,
     AppModal,
+    AppSearch,
+    AddForm,
   },
   methods: {
     beforeLeave(el) {
@@ -217,18 +119,14 @@ export default {
       el.style.width = width;
       el.style.height = height;
     },
-    addCard() {
+    addCard(card) {
       this.products.push({
-        name: this.name,
-        desc: this.desc,
-        link: this.link,
-        price: this.price,
-        priceToNumber: this.stringToNumber(this.price),
+        ...card,
+        priceToNumber: this.stringToNumber(card.price),
         id: Date.now(),
       });
       this.sortCards(this.selected);
       this.saveCards();
-      this.clearInputs();
       this.addPopup();
     },
     delCard(id) {
@@ -259,19 +157,6 @@ export default {
           this.products.sort((a, b) => a.name.localeCompare(b.name));
           break;
       }
-    },
-    checkValid(type, target) {
-      if (type === "blur") {
-        this.valid[target] = this[target] ? true : false;
-      } else if (type === "focus") {
-        this.valid[target] = true;
-      }
-    },
-    clearInputs() {
-      this.name = "";
-      this.desc = "";
-      this.link = "";
-      this.price = "";
     },
     loadProducts() {
       if (window.innerWidth < 768) {
@@ -316,6 +201,8 @@ export default {
         ...data,
         priceToNumber: this.stringToNumber(data.price),
       };
+      this.saveCards();
+      this.sortCards(this.selected);
     },
     stringToNumber(value) {
       return parseInt(value.replace(/\s/g, ""));
@@ -333,17 +220,19 @@ export default {
       return spaceToValue[0] === " " ? spaceToValue.slice(1) : spaceToValue;
     },
   },
-  computed: {
-    checkValidForm() {
-      return this.name && this.link && this.price ? true : false;
-    },
-  },
   watch: {
+    // Вариант №2
+    //  products: {
+    //    handler(value) {
+    //      if (this.foundName) return;
+
+    //      this.sortCards(this.selected);
+    //      this.saveCards();
+    //    },
+    //    deep: true,
+    //  },
     selected(value) {
       this.sortCards(value);
-    },
-    price(value) {
-      this.price = this.validPrice(value);
     },
   },
 };

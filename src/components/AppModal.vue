@@ -91,6 +91,7 @@ export default {
         link: this.editLink,
         desc: this.editDesc,
         id: this.item.id,
+        edited: true,
       });
       this.$emit("close");
     },
