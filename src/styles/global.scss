@@ -2,6 +2,11 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@600&display=swap');
 
 $mainColor: #3F3F3F;
+$mainGreen: #7BAE73;
+$mainGrey:#B4B4B4;
+$mainWhite: #FFFEFB;
+$mainRed: #FF8484;
+$mainBlue: #71adfc;
 $fontFamily:'Source Sans Pro';
 $fontSize: 16px;
 
@@ -50,3 +55,5 @@ $fontSize: 16px;
 @import './loader.scss';
 @import './transition.scss';
 @import './modal.scss';
+@import './search.scss';
+@import './select.scss';

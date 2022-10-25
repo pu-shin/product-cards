@@ -2,15 +2,10 @@
   <div class="wrapper">
     <header class="header">
       <div class="header__container">
-        <div class="header__content content-header">
-          <h1 class="content-header__text">Добавление товара</h1>
+        <div class="header__content">
+          <h1 class="header__text">Добавление товара</h1>
           <app-search @search-card="searchProduct"></app-search>
-          <select class="content-header__select" v-model="selected">
-            <option value="default" selected hidden>По умолчанию</option>
-            <option value="max">По цене max</option>
-            <option value="min">По цене min</option>
-            <option value="title">По названию</option>
-          </select>
+          <app-select @selected="sortCards"></app-select>
         </div>
       </div>
     </header>
@@ -53,6 +48,7 @@ import AppModal from "@/components/AppModal.vue";
 import AppSearch from "@/components/AppSearch.vue";
 import AddForm from "@/components/AddForm.vue";
 import AppCards from "@/components/AppCards.vue";
+import AppSelect from "@/components/AppSelect.vue";
 
 export default {
   name: "App",
@@ -77,6 +73,7 @@ export default {
     AppSearch,
     AddForm,
     AppCards,
+    AppSelect,
   },
   methods: {
     addCard(card) {

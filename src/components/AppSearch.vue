@@ -1,5 +1,5 @@
 <template>
-  <div class="content-header__search search">
+  <div class="header__search search">
     <input
       class="search__input"
       type="text"

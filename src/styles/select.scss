@@ -1,0 +1,38 @@
+	.select {
+		position: relative;
+		font-size: 12px;
+		color: $mainGrey;
+		background: $mainWhite;
+		text-align: center;
+
+		&__toggle{
+		width: 121.5px;
+		padding: 8.5px 5px 8.5px 5px;
+		box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+		border: none;
+		border-radius: 4px;
+		line-height: 125%;
+		}
+		&__dropdown{
+		position: absolute;
+		top: 37px;
+		z-index: 1;
+		width: 121.5px;
+		box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+		border: none;
+		border-radius: 4px;
+		line-height: 125%;
+		background: $mainWhite;
+		overflow: hidden;
+		}
+		&__options {
+		}
+		&__option {
+			padding: 5px;
+			&:hover {
+				background-color: $mainGreen;
+				color: $mainWhite;
+				cursor: pointer;
+			}
+				}
+	}
