@@ -4,18 +4,22 @@
 		align-items: center;
 		margin-bottom: 25px;
 		padding-top: 32px;
-		gap: 25px;
+		gap: 20px;
 		flex-wrap: wrap-reverse;
 		justify-content: end;
+		@media (max-width: 403.98px) {
+			justify-content: center;
+		}
 	}
 	&__text {
 		font-weight: 600;
 		font-size: 28px;
 		line-height: 125%;
-		color: #3F3F3F;
+		color: #3f3f3f;
 		padding-right: 5px;
 		flex: 1 0 auto;
-		@media (max-width: 529.98px) {
+		@media (max-width: 679.98px) {
+			flex-basis: 100%;
 			text-align: center;
 		}
 	}

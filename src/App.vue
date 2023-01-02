@@ -12,7 +12,7 @@
     <main class="mainpage">
       <div class="product">
         <div class="product__container">
-          <add-form :validPrice="validPrice" @add-card="addCard"></add-form>
+          <app-form :validPrice="validPrice" @add-card="addCard"></app-form>
           <app-cards
             :products="products"
             @edit-card="editCard"
@@ -46,7 +46,7 @@ import AppLoader from "@/components/AppLoader.vue";
 import AppPopup from "@/components/AppPopup.vue";
 import AppModal from "@/components/AppModal.vue";
 import AppSearch from "@/components/AppSearch.vue";
-import AddForm from "@/components/AddForm.vue";
+import AppForm from "@/components/AppForm.vue";
 import AppCards from "@/components/AppCards.vue";
 import AppSelect from "@/components/AppSelect.vue";
 
@@ -65,15 +65,6 @@ export default {
   },
   mounted() {
     this.loadProducts();
-  },
-  components: {
-    AppLoader,
-    AppPopup,
-    AppModal,
-    AppSearch,
-    AddForm,
-    AppCards,
-    AppSelect,
   },
   methods: {
     addCard(card) {
@@ -113,7 +104,9 @@ export default {
       }
     },
     loadProducts() {
-      if (window.innerWidth < 768) {
+      const isMobile = window.matchMedia("(max-width:  768px)").matches;
+
+      if (isMobile) {
         this.renderCards();
         return;
       }
@@ -188,6 +181,15 @@ export default {
     selected(value) {
       this.sortCards(value);
     },
+  },
+  components: {
+    AppLoader,
+    AppPopup,
+    AppModal,
+    AppSearch,
+    AppForm,
+    AppCards,
+    AppSelect,
   },
 };
 </script>

@@ -1,12 +1,11 @@
-.form{
+.form {
 	flex: 0 1 340px;
 	min-width: 275px;
 	padding-right: 8px;
 	@media (max-width: 479.98px) {
-		max-width: 332px;
+		flex: 1 0 auto;
 		padding: 0px;
-		}
-	
+	}
 }
 .form-control {
 	padding: 24px;
@@ -19,7 +18,7 @@
 		font-size: 12px;
 		line-height: 13px;
 		letter-spacing: -0.02em;
-		color: #49485E;
+		color: #49485e;
 	}
 
 	&__label_required::after {
@@ -45,7 +44,7 @@
 		margin-bottom: 16px;
 		&::placeholder {
 			color: $mainGrey;
-			}
+		}
 	}
 
 	&__textarea {
@@ -56,9 +55,9 @@
 
 	&__button {
 		height: 36px;
-		background: #EEEEEE;
+		background: #eeeeee;
 		border-radius: 10px;
-		font-family: 'Inter';
+		font-family: "Inter";
 		font-style: normal;
 		font-weight: 600;
 		font-size: 12px;
@@ -67,32 +66,30 @@
 		color: $mainGrey;
 	}
 
-	&__button_valid{
+	&__button_valid {
 		background-color: $mainGreen;
 		color: $mainWhite;
 	}
 
-
-&__row {
-	display: flex;
-	flex-direction: column;
-	row-gap: 4px;
-	position: relative;
-
-}
-&__row_required {
-	> input {
+	&__row {
+		display: flex;
+		flex-direction: column;
+		row-gap: 4px;
+		position: relative;
+	}
+	&__row_required {
+		> input {
 			border: 1px solid $mainRed;
+		}
+		&:after {
+			content: "Поле является обязательным";
+			position: absolute;
+			color: $mainRed;
+			top: 80%;
+			left: 0;
+			font-size: 10px;
+			line-height: 125%;
+			letter-spacing: -0.02em;
+		}
 	}
-	&:after{
-		content: "Поле является обязательным";
-		position: absolute;
-		color: $mainRed;
-		top: 80%;
-		left: 0;
-		font-size: 10px;
-		line-height: 125%;
-		letter-spacing: -0.02em;
-	}
-}
 }
